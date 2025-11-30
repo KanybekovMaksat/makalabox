@@ -1,9 +1,0 @@
-Creator: Maksat Kanybekov
-Contact: maksatkanybekov2004@gmail.com
-Website: https://www.makalabox.com
-
-
-Thank you to all our contributors and users!
-
-
-Platform: React.js, Django Rest Framework
