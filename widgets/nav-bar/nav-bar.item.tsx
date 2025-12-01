@@ -1,15 +1,29 @@
 import { MenuItem } from 'react-pro-sidebar';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export const NavbarItem = ({ title, to, icon, selected, setSelected }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
+  
   const handleClick = () => {
-    navigate(to);
+    router.push(to);
     setSelected(title);
   };
+
   return (
-    <MenuItem active={selected === title} onClick={handleClick} icon={icon}>
-      <Link to={to} onClick={() => setSelected(title)}>
+    <MenuItem 
+      active={selected === title} 
+      onClick={handleClick} 
+      icon={icon}
+    >
+      <Link 
+        href={to} 
+        onClick={(e) => {
+          e.preventDefault(); 
+          handleClick();
+        }}
+        className="block w-full"
+      >
         <p>{title}</p>
       </Link>
     </MenuItem>

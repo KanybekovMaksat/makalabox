@@ -41,7 +41,7 @@ const cards: ICard[] = [
 
 function CardItem({ image, title, description }) {
   return (
-    <div className="min-w-[200px] max-w-[100%] md:max-w-[230px] min-h-[200px] max-h-[200px] p-3 py-4 hover:text-second-100 bg-[white] border-2 border-[#ccccccbc]  duration-300 hover:border-pc-200 rounded-md">
+    <div className="min-w-[200px] max-w-[100%] md:max-w-[230px] min-h-[200px] max-h-[200px] p-3 py-4 hover:text-second-100  border-2 border-[#ccccccbc]  duration-300 hover:border-pc-200 rounded-md">
       <img src={image} alt="" className="h-20 mx-auto" />
       <h3 className="text-lg font-semibold my-1 text-center">{title}</h3>
       <p className="text-sm md:text-xs text-pc-500 font-medium text-center md:text-left">
