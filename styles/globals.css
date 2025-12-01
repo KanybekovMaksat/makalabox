@@ -3,6 +3,39 @@
   width: 100% !important;
   max-width: 100% !important;
 }
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 240 5.9% 10%;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --sidebar-background: 240 10% 3.9%;
+  --sidebar-foreground: 240 4.8% 95.9%;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.ps-sidebar-root {
+  background-color: hsl(var(---background)) !important;
+  color: hsl(var(--sidebar-foreground)) !important;
+}
+
+.ps-menuitem-root:hover {
+  background-color: hsl(var(--sidebar-foreground) / 0.1) !important;
+}
+
+.ps-menuitem-root.ps-active {
+  background-color: hsl(var(--sidebar-foreground) / 0.15) !important;
+}
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -13,6 +46,70 @@
 
 ::-webkit-scrollbar-thumb {
   background: #0000003e;
+}
+.bn-container[data-changing-font-demo] .bn-editor {
+  padding: 0;
+}
+
+.bn-container[data-changing-font-demo] .bn-editor * {
+  font-family: "Rubik", sans-serif;
+}
+.bn-container[data-changing-font-demo] .bn-editor img {
+  max-width: 95%;
+}
+.bn-inline-content a{
+  color:#0a85d1 !important;
+  text-decoration:underline;
+}
+.bn-inline-content a:hover{
+  cursor:pointer;
+}
+
+.bn-container[data-changing-font-demo]
+  .bn-editor
+  .bn-block-outer:not([data-prev-type])
+  > .bn-block
+  > .bn-block-content[data-content-type='heading'][data-level='3'] {
+  font-size: 1em;
+  font-weight: 600;
+}
+.bn-container[data-changing-font-demo]
+  .bn-editor
+  .bn-block-outer:not([data-prev-type])
+  > .bn-block
+  > .bn-block-content[data-content-type='heading'][data-level='2'] {
+  font-size: 1.4em;
+  font-weight: 600;
+}
+.bn-container[data-changing-font-demo]
+  .bn-editor
+  .bn-block-outer:not([data-prev-type])
+  > .bn-block
+  > .bn-block-content[data-content-type='heading'][data-level='1'] {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+/* Фон меню белый, текст чёрный */
+.bn-mantine .bn-suggestion-menu {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ddd !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.bn-mt-suggestion-menu-item-subtitle {
+  color: rgba(0, 0, 0, 0.63) !important;
+}
+.bn-mt-suggestion-menu-item-title {
+  color: rgba(0, 0, 0, 0.747) !important;
+}
+
+.bn-mt-suggestion-menu-item-section{
+  border:  1px solid #0000003d;
+}
+.bn-mt-suggestion-menu-item-section[data-position="right"]{
+ border: none; 
 }
 
 .swiper-card {

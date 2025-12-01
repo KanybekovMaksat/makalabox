@@ -25,7 +25,7 @@ import { toast } from 'react-toastify';
 import { queryClient } from './../../shared/lib/react-query/react-query.lib';
 import { Article } from './article.types';
 import { AxiosResponse } from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 
 type AxiosErrorType = {
   code: string;
@@ -256,14 +256,14 @@ export function useBoxCreate() {
 }
 
 export function useUpdateArticle(id) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return useMutation({
     mutationKey: keys.updateArticle(),
     mutationFn: editArticle,
     onSuccess: async () => {
       toast.success('Статья успешна отправлена на модерацию');
       // localStorage.removeItem(`editContent-${id}`);
-      navigate('/profile');
+      // navigate('/profile');
     },
     onError: (error: AxiosErrorType) => {
       if (error.response && error.response.data) {

@@ -1,22 +1,31 @@
 import { useState } from 'react';
-import { CreateArticle } from '@/widgets/create-article'; 
-
-
-
-
+import { CreateArticle } from '@/widgets/create-article';
+import DefaultLayout from '@/layouts/default';
+import { CategorySelect } from '@/features/editor/category-select';
+import { CoverCropper } from '@/features/editor/cover-cropper';
+import { articleQueries } from '@/entities/article';
+import { Button } from '@heroui/button';
 
 export default function Sandbox() {
-  const [title, setTitle] = useState("")
+  const { mutate: createArticle, isPending } =
+    articleQueries.useCreateArticleMutation();
+  const [title, setTitle] = useState('');
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [selectedOrg, setSelectedOrg] = useState<string>('');
+
   const handleTitleChange = (newTitle: string) => {
     setTitle(newTitle);
-    
   };
+
   return (
-    <>
-      <div className="min-h-[700px] my-10">
-              <CreateArticle onTitleChange={handleTitleChange} />
-      </div>
-    </>
+    <DefaultLayout>
+      <CoverCropper update={false} />
+      <CategorySelect
+        selectCategory={selectedValues}
+        handleChange={setSelectedValues}
+      />
+      <CreateArticle onTitleChange={handleTitleChange} />
+      <Button>Опубликовать</Button>
+    </DefaultLayout>
   );
 }
-

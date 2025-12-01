@@ -1,88 +1,108 @@
 import { useState } from 'react';
 import { Sidebar, Menu } from 'react-pro-sidebar';
-import { 
+import {
   HomeIcon,
   CompassIcon,
   BarChart3Icon,
   PackageIcon,
   InfoIcon,
   FlameIcon,
-  Book
+  Book,
 } from 'lucide-react';
+import { useTheme } from 'next-themes'; // Импортируем хук для темы
 
 import { NavbarItem } from './nav-bar.item';
 import { CategoryNavbar } from './nav-bar.category';
 
 export function SideBar() {
   const [selected, setSelected] = useState('');
+  const { theme } = useTheme(); // Получаем текущую тему
+
+  // Определяем стили в зависимости от темы
+  const sidebarStyles = {
+    backgroundColor: theme === 'dark' ? 'black' : 'white',
+    color: theme === 'dark' ? '#e4e4e7' : '#000000',
+  };
+
+  const iconColor = theme === 'dark' ? '#a1a1aa' : '#6b7280';
 
   return (
     <div
-      className="min-h-screen fixed bg-white"
       style={{
-        '& .pro-sidebar': {
-          maxWidth: '220px !important',
-          minWidth: '200px !important',
-          background:"white",
+        '& .sidebar': {
+          border: 'none',
         },
-        '& .ps-sidebar-container': {
+        '& .menu-icon': {
           backgroundColor: 'transparent !important',
         },
-        '& .ps-sidebar-root': {
-          borderColor: 'transparent',
+        '& .menu-item': {
+          backgroundColor: 'transparent !important',
         },
-        '& .ps-menu-button:hover': {
-          borderRadius: '5px',
+        '& .menu-anchor': {
+          color: 'inherit !important',
+          backgroundColor: 'transparent !important',
         },
-        '& .ps-menuitem-root.ps-active': {
-          background: 'white',
-          borderRadius: '5px',
+        '& .menu-item:hover': {
+          color: theme === 'dark' ? '#ffffff !important' : '#000000 !important',
+          backgroundColor: theme === 'dark' ? '#2a2a2a !important' : '#f5f5f5 !important',
         },
-      } as any}
+        '& .menu-item.active': {
+          color: theme === 'dark' ? '#ffffff !important' : '#000000 !important',
+          backgroundColor: theme === 'dark' ? '#2a2a2a !important' : '#f5f5f5 !important',
+        },
+      }}
+      className={`min-h-screen fixed border-none z-10000 flex ${
+        theme === 'dark' ? 'dark' : ''
+      }`}
     >
-      <Sidebar className="h-[calc(100vh - 64px)]  block">
+      <Sidebar
+        backgroundColor={sidebarStyles.backgroundColor}
+        className="h-[calc(100vh - 64px)] block border-none!"
+        rootStyles={{
+          color: sidebarStyles.color,
+        }}
+      >
         <Menu>
-          <div className="overflow-y-hidden duration-300 hover:overflow-y-auto max-h-screen  pb-40">
+          <div className="overflow-y-hidden duration-300 hover:overflow-y-auto max-h-screen pb-40">
             <NavbarItem
               title="Популярное"
               to="/"
-              icon={<FlameIcon className="w-6 h-6 text-gray-500" />}
+              icon={<FlameIcon className="w-6 h-6" style={{ color: iconColor }} />}
               selected={selected}
               setSelected={setSelected}
             />
             <NavbarItem
               title="Обзор"
               to="/feed"
-              icon={<Book className="w-6 h-6 text-gray-500" />}
+              icon={<Book className="w-6 h-6" style={{ color: iconColor }} />}
               selected={selected}
               setSelected={setSelected}
             />
             <NavbarItem
               title="Рейтинг"
               to="/rating/"
-              icon={<BarChart3Icon className="w-6 h-6 text-gray-500" />}
+              icon={<BarChart3Icon className="w-6 h-6" style={{ color: iconColor }} />}
               selected={selected}
               setSelected={setSelected}
             />
             <NavbarItem
               title="Коробки"
               to="/boxes"
-              icon={<PackageIcon className="w-6 h-6 text-gray-500" />}
+              icon={<PackageIcon className="w-6 h-6" style={{ color: iconColor }} />}
               selected={selected}
               setSelected={setSelected}
             />
             <NavbarItem
               title="О Проекте"
               to="/about"
-              icon={<InfoIcon className="w-6 h-6 text-gray-500" />}
+              icon={<InfoIcon className="w-6 h-6" style={{ color: iconColor }} />}
               selected={selected}
               setSelected={setSelected}
             />
-            
-            {/* <h5 className="text-meduim text-sm mt-4 text-pc-500">Категории</h5>
-            <CategoryNavbar /> */}
 
-            <p className="text-meduim text-sm mt-4 text-pc-500">
+            <p className="text-meduim text-sm mt-4" style={{ 
+              color: theme === 'dark' ? '#a1a1aa' : '#6b7280' 
+            }}>
               &reg; Makalabox 2024
             </p>
           </div>

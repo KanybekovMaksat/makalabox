@@ -14,11 +14,11 @@ import {
   queryOptions as tsqQueryOptions,
   useQueryClient,
 } from '@tanstack/react-query';
-import { pathKeys } from '~shared/lib/react-router';
-import { useNavigate } from 'react-router-dom';
+import { pathKeys } from '@/shared/lib/react-router';
+
 import { setCookie } from 'typescript-cookie';
 import { toast } from 'react-toastify';
-import { queryClient } from '~shared/lib/react-query/react-query.lib';
+import { queryClient } from '@/shared/lib/react-query/react-query.lib';
 import { UserDtoSchema } from './user.types';
 
 const keys = {
@@ -78,7 +78,7 @@ export function useLoginUserQuery() {
 }
 
 export function useGetTokenMutation() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return useMutation({
     mutationKey: keys.getToken(),
     mutationFn: getTokenMutation,
@@ -88,7 +88,7 @@ export function useGetTokenMutation() {
       localStorage.removeItem('username');
       localStorage.removeItem('password');
       toast.success('Вы успешно авторизовались!', { autoClose: 500 });
-      navigate(pathKeys.profile.root());
+      // navigate(pathKeys.profile.root());
     },
     onError: (error: AxiosErrorType) => {
       const errorMessage = error.response

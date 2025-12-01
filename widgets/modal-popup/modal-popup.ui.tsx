@@ -1,5 +1,5 @@
-import { IconButton } from '@mui/material';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import { Button } from "@heroui/button";
+
 
 export function ModalPopup({ active, setActive, children }) {
   return (
@@ -15,9 +15,9 @@ export function ModalPopup({ active, setActive, children }) {
           active ? 'scale-100' : 'scale-0'
         }`}
       >
-        <IconButton onClick={() => setActive(false)} className="self-end">
-          <CancelRoundedIcon />
-        </IconButton>
+        <Button onClick={() => setActive(false)} className="self-end">
+          X
+        </Button>
 
         {children}
       </div>

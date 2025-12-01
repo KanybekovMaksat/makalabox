@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ArticleSchema } from '~entities/article/article.contracts';
+import { ArticleSchema } from '@/entities/article/article.contracts';
 
 export const LoginUserDtoSchema = z.object({
   email: z

@@ -1,11 +1,20 @@
 import { Fira_Code as FontMono, Inter as FontSans } from "next/font/google";
+import { Rubik } from "next/font/google";
 
-export const fontSans = FontSans({
+export const fontSans = Rubik({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-rubik",
+  weight: ["300", "400", "500", "600", "700", "800", "900"], 
 });
 
-export const fontMono = FontMono({
+export const fontMono = Rubik({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-rubik",
+  weight: ["300", "400", "500", "600", "700", "800", "900"], 
+});
+
+export const fontRubik = Rubik({
+  subsets: ["latin"],
+  variable: "--font-rubik",
+  weight: ["300", "400", "500", "600", "700", "800", "900"], 
 });

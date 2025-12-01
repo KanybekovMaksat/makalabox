@@ -9,7 +9,7 @@ import {
   UpdatePassword,
   UserDtoSchema,
 } from './user.types';
-import $api from '~shared/api';
+import $api from '@/shared/api';
 
 const API = 'https://api.makalabox.com/api/users';
 

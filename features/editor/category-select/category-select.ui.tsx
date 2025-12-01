@@ -1,6 +1,6 @@
 import Select, { StylesConfig } from 'react-select';
 import makeAnimated from 'react-select/animated';
-import { categoryQueries } from '~entities/category';
+import { categoryQueries } from '@/entities/category';
 
 const animatedComponents = makeAnimated();
 const MAX_CATEGORIES = 3; 

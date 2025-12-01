@@ -14,7 +14,7 @@ export default function DefaultLayout({
       <Navbar />
 
       <main className="flex-1 flex justify-between ">
-        <div className="w-[15%] bg-gray-50 ">
+        <div className="w-[15%]  ">
           <SideBar />
         </div>
 
