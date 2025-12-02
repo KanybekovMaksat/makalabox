@@ -12,14 +12,22 @@ export default function Sandbox() {
   const [title, setTitle] = useState('');
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [selectedOrg, setSelectedOrg] = useState<string>('');
-
+  const [coverImage, setCoverImage] = useState('');
+  const [coverPosition, setCoverPosition] = useState('center');
   const handleTitleChange = (newTitle: string) => {
     setTitle(newTitle);
   };
 
   return (
     <DefaultLayout>
-      <CoverCropper update={false} />
+<CoverCropper
+  value={coverImage}
+  onChange={(image, position) => {
+    setCoverImage(image);
+    if (position) setCoverPosition(position);
+  }}
+  initialPosition="center"
+/>
       <CategorySelect
         selectCategory={selectedValues}
         handleChange={setSelectedValues}

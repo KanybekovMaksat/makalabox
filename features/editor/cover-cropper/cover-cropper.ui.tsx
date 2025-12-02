@@ -1,34 +1,29 @@
-import { Box, Button, CardMedia, Modal, Slider } from '@mui/material';
+import { useRef, useState, useEffect } from 'react';
 import Dropzone from 'react-dropzone';
 import AvatarEditor from 'react-avatar-editor';
-import React, { useRef, useState } from 'react';
-
-const boxStyle = {
-  width: '950px',
-  height: '500px',
-  display: 'flex',
-  flexFlow: 'column',
-  justifyContent: 'center',
-  objectFit: 'cover',
-  alignItems: 'center',
-};
-const modalStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  objectFit: 'cover',
-};
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
+} from "@heroui/modal";
+import { X, Save, Image as ImageIcon, Upload, RefreshCw } from 'lucide-react';
+import {Slider} from "@heroui/slider";
+import {Button, ButtonGroup} from "@heroui/button";
 
 interface CropperModalProps {
   src: string | null;
   modalOpen: boolean;
   setModalOpen: (open: boolean) => void;
+  onSave: (imageUrl: string) => void;
 }
 
 const CropperModal: React.FC<CropperModalProps> = ({
   src,
   modalOpen,
   setModalOpen,
+  onSave,
 }) => {
   const [slideValue, setSlideValue] = useState<number>(1);
   const cropRef = useRef<AvatarEditor | null>(null);
@@ -36,49 +31,79 @@ const CropperModal: React.FC<CropperModalProps> = ({
   const handleSave = async () => {
     if (cropRef.current) {
       const dataUrl = cropRef.current.getImage().toDataURL();
-      const result = await fetch(dataUrl);
-      const blob = await result.blob();
-      localStorage.setItem('savedImage', URL.createObjectURL(blob));
+      onSave(dataUrl);
       setModalOpen(false);
     }
   };
 
   return (
-    <Modal sx={modalStyle} open={modalOpen}>
-      <Box sx={boxStyle}>
-        <AvatarEditor width={900} height={300} ref={cropRef} image={src || ''}  scale={slideValue} />
-        <Slider
-          min={1}
-          max={10}
-          sx={{
-            margin: '0 auto',
-            width: '80%',
-            color: 'cyan',
-          }}
-          size="medium"
-          defaultValue={slideValue}
-          value={slideValue}
-          onChange={(_, value) => setSlideValue(value as number)}
-        />
-        <Box>
-          <Button
-            size="small"
-            sx={{ marginRight: '10px', color: 'white', borderColor: 'white' }}
-            variant="outlined"
-            onClick={() => setModalOpen(false)}
-          >
-            cancel
-          </Button>
-          <Button
-            sx={{ background: '#5596e6' }}
-            size="small"
-            variant="contained"
-            onClick={handleSave}
-          >
-            Save
-          </Button>
-        </Box>
-      </Box>
+    <Modal 
+      isOpen={modalOpen} 
+      onClose={() => setModalOpen(false)}
+      size="3xl"
+      placement="center"
+      classNames={{
+        base: "bg-background",
+        wrapper: "flex justify-center items-center",
+      }}
+    >
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1 text-foreground">
+              Редактировать обложку
+            </ModalHeader>
+            <ModalBody className="flex flex-col items-center gap-4">
+              <AvatarEditor 
+                width={900} 
+                height={300} 
+                ref={cropRef} 
+                image={src || ''}  
+                scale={slideValue}
+                className="rounded-lg border border-default-200"
+              />
+              <div className="w-full max-w-2xl">
+                <p className="text-small text-foreground-600 mb-2">
+                  Масштаб: {slideValue.toFixed(1)}x
+                </p>
+                <Slider
+                  aria-label="Масштаб"
+                  size="md"
+                  minValue={1}
+                  maxValue={10}
+                  step={0.1}
+                  defaultValue={1}
+                  value={slideValue}
+                  onChange={setSlideValue}
+                  classNames={{
+                    base: "max-w-full",
+                    track: "border-s-cyan-500",
+                    filler: "bg-gradient-to-r from-cyan-500 to-blue-500",
+                    thumb: "bg-gradient-to-r from-cyan-500 to-blue-500",
+                  }}
+                />
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="danger"
+                variant="flat"
+                onPress={onClose}
+                startContent={<X className="w-4 h-4" />}
+              >
+                Отмена
+              </Button>
+              <Button
+                color="primary"
+                onPress={handleSave}
+                startContent={<Save className="w-4 h-4" />}
+              >
+                Сохранить
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
     </Modal>
   );
 };
@@ -90,66 +115,85 @@ interface CoverCropperProps {
 }
 
 export function CoverCropper({ update, setUpdate, data }: CoverCropperProps) {
-  const [src, setSrc] = useState<string | null>(null);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  // 👈 1. Создаем ref для доступа к input file
+  const [src, setSrc] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [savedImage, setSavedImage] = useState<string | null>(null);
   const dropzoneRef = useRef<Dropzone | null>(null);
-  
-  const handleDrop = (dropped: File[]) => {
-    setSrc(dropped[0] as unknown as string);
-    setModalOpen(true);
-  };
-
-  const handleSelectAnotherPhoto = () => {
-    setSrc(null);
-    localStorage.setItem('savedImage', '');
-    // 👈 2. Вызываем click на скрытом элементе input
-    if (dropzoneRef.current) {
-        dropzoneRef.current.open();
+  
+  // Загружаем сохраненное изображение только на клиенте
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('savedImage');
+      setSavedImage(saved);
     }
-  };
-  const imageRef = localStorage.getItem('savedImage');
+  }, []);
 
-  if (update) {
-    return (
-      <div>
-        <div className="">
-          <img
-            src={data}
-            alt=""
-            className="min-w-[94%] max-w-[100%] min-h-[300px] max-h-[300px] object-cover rounded "
-          />
-          <p>Примерное отображения обложки </p>
-          <img
-            src={data}
-            alt=""
-            className="max-w-[650px] min-h-[250px] max-h-[250px] object-cover rounded mt-3"
-          />
-          <p>Примерное отображения обложки на маленьких экранах</p>
-        </div>
-        <Button
-          variant="outlined"
-          className="my-3"
-          onClick={() => setUpdate?.(false)}
-        >
-          Выбрать другое фото
-        </Button>
-      </div>
-    );
-  }
+  const handleDrop = (dropped: File[]) => {
+    setSrc(URL.createObjectURL(dropped[0]));
+    setModalOpen(true);
+  };
 
-  return (
-    <div className="w-full mt-2 flex gap-5">
-      {/* 👈 3. Dropzone всегда отображается, но скрыто */}
-      <div style={{ display: 'none' }}>
+  const handleSaveImage = (imageUrl: string) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('savedImage', imageUrl);
+      setSavedImage(imageUrl);
+    }
+  };
+
+  const handleSelectAnotherPhoto = () => {
+    setSrc(null);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('savedImage');
+      setSavedImage(null);
+    }
+    if (dropzoneRef.current) {
+      dropzoneRef.current.open();
+    }
+  };
+
+  if (update) {
+    return (
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <img
+            src={data}
+            alt="Предпросмотр обложки"
+            className="w-full min-w-[94%] max-w-full h-[300px] object-cover rounded-lg border border-default-200"
+          />
+          <p className="text-small text-foreground-600">
+            Примерное отображение обложки
+          </p>
+          <img
+            src={data}
+            alt="Предпросмотр на маленьких экранах"
+            className="w-full max-w-[650px] h-[250px] object-cover rounded-lg border border-default-200 mt-3"
+          />
+          <p className="text-small text-foreground-600">
+            Примерное отображение обложки на маленьких экранах
+          </p>
+        </div>
+        <Button
+          variant="bordered"
+          className="my-3"
+          onPress={() => setUpdate?.(false)}
+          startContent={<RefreshCw className="w-4 h-4" />}
+        >
+          Выбрать другое фото
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full mt-2">
+      <div className="hidden">
         <Dropzone
-          ref={dropzoneRef} // 👈 4. Привязываем ref к Dropzone
+          ref={dropzoneRef}
           onDrop={handleDrop}
           noKeyboard
-          // Устанавливаем `preventDropOnDocument` в true, чтобы предотвратить случайный дроп
-          preventDropOnDocument={true} 
-          accept={{ 'image/jpeg': ['.jpeg', '.png', '.svg'] }}
+          preventDropOnDocument={true}
+
         >
           {({ getRootProps, getInputProps }) => (
             <div {...getRootProps()}>
@@ -162,82 +206,95 @@ export function CoverCropper({ update, setUpdate, data }: CoverCropperProps) {
         </Dropzone>
       </div>
 
-      {!imageRef || imageRef.length === 0 ? (
-        // Блок для первого выбора файла (Drag and Drop)
-        <Dropzone
-          // При первом выборе файла мы используем Dropzone как видимый элемент
-          onDrop={handleDrop}
-          noKeyboard
-          accept={{ 'image/jpeg': ['.jpeg', '.png', '.svg'] }}
-        >
-          {({ getRootProps, getInputProps, isDragActive }) => (
-            <div
-              {...getRootProps()}
-              className={`w-full h-[50px] rounded border-2 border-dashed  ${
-                isDragActive ? 'border-second-100' : 'border-pc-300'
-              } relative flex justify-center items-center cursor-pointer`}
-            >
-              <input
-                onChange={(e) => handleDrop(e.target.files as unknown as File[])}
-                {...getInputProps()}
-                placeholder="Drag  drop some files here, or click to select files"
-              />
-              <p
-                className={`text-center ${
-                  isDragActive ? 'text-second-100' : 'text-pc-300'
-                } `}
-              >
-                {isDragActive ? '+' : ' Выберите картинку для обложки'}
-              </p>
-            </div>
-          )}
-        </Dropzone>
-      ) : (
-        // Блок, когда фото уже выбрано и отображается
-        <div className="w-full">
-          <div 
-            className="relative rounded-xl"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <CardMedia
-              component="img"
-              className="w-full border border-[gray]/30 min-h-[300px] max-h-[320px] object-cover rounded cursor-pointer"
-              image={imageRef}
-              alt="Обложка"
-              title="Обложка"
-            />
-          
-            {isHovered && (
-              <div
+      {!savedImage || savedImage.length === 0 ? (
+        <Dropzone
+          onDrop={handleDrop}
+          noKeyboard
+        
+        >
+          {({ getRootProps, getInputProps, isDragActive }) => (
+            <div
+              {...getRootProps()}
+              className={`w-full h-64 rounded-xl border-2 border-dashed transition-colors ${
+                isDragActive 
+                  ? 'border-primary bg-primary/10' 
+                  : 'border-default-300 hover:border-default-400'
+              } relative flex flex-col justify-center items-center cursor-pointer gap-3 p-4`}
+            >
+              <input
+                onChange={(e) => handleDrop(e.target.files as unknown as File[])}
+                {...getInputProps()}
+              />
+              <div className={`p-3 rounded-full ${
+                isDragActive ? 'bg-primary/20' : 'bg-default-100'
+              }`}>
+                {isDragActive ? (
+                  <Upload className="w-8 h-8 text-primary" />
+                ) : (
+                  <ImageIcon className="w-8 h-8 text-default-500" />
+                )}
+              </div>
+              <p className={`text-center text-medium ${
+                isDragActive ? 'text-primary' : 'text-foreground-600'
+              }`}>
+                {isDragActive 
+                  ? 'Отпустите для загрузки' 
+                  : 'Перетащите изображение или кликните для выбора'}
+              </p>
+              <p className="text-small text-foreground-500">
+                Поддерживаемые форматы: JPEG, PNG, SVG, WebP
+              </p>
+            </div>
+          )}
+        </Dropzone>
+      ) : (
+        <div className="w-full">
+          <div 
+            className="relative rounded-xl overflow-hidden"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <img
+              className="w-full border border-default-200 h-[320px] object-cover rounded-xl cursor-pointer"
+              src={savedImage}
+              alt="Обложка"
+              title="Обложка"
+            />
+          
+            {isHovered && (
+              <div
+                className="absolute inset-0 bg-black/70 rounded-xl flex flex-col justify-center items-center cursor-pointer transition-all duration-300 p-4"
+                onClick={handleSelectAnotherPhoto}
+              >
+                <div className="text-center space-y-3">
+                  <p className="text-white text-lg font-medium pointer-events-none">
+                    Вы можете поменять обложку
+                  </p>
+                  <Button
+                    color="primary"
+                    variant="shadow"
+                    className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
+                    onPress={(e) => {
+                      e.stopPropagation();
+                      handleSelectAnotherPhoto();
+                    }}
+                    startContent={<ImageIcon className="w-4 h-4" />}
+                  >
+                    Выбрать другое фото
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
-                className="absolute inset-0 bg-[black] bg-opacity-80 rounded flex flex-col justify-center items-center cursor-pointer transition-opacity duration-300"
-                onClick={handleSelectAnotherPhoto} 
-              >
-                <p className="text-[white] text-lg mb-2 pointer-events-none">
-                  Вы можете поменять обложку
-                </p>
-                <Button
-                  variant="contained"
-                  style={{ backgroundColor: '#5596e6', color: 'white' }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSelectAnotherPhoto();
-                  }}
-                >
-                  Выбрать другое фото
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      <CropperModal
-        modalOpen={modalOpen}
-        src={src}
-        setModalOpen={setModalOpen}
-      />
-    </div>
-  );
+      <CropperModal
+        modalOpen={modalOpen}
+        src={src}
+        setModalOpen={setModalOpen}
+        onSave={handleSaveImage}
+      />
+    </div>
+  );
 }

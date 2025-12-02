@@ -18,12 +18,11 @@ export default function DefaultLayout({
           <SideBar />
         </div>
 
-        <div className="w-[70%] max-w-[70%]  flex px-10">
+        <div className="w-[70%] min-w-[70%] max-w-[70%]   px-10">
           <div className="max-w-full px-10">{children}</div>
-          
           </div>
 
-        <div className="w-[15%] bg-gray-50  p-6">
+        <div className="w-[15%]  p-6">
           {/* <div className="fixed">
             <h3 className="font-bold text-lg mb-4">Реклама</h3>
             <div className="space-y-3">

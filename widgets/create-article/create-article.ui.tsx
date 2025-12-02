@@ -296,12 +296,12 @@ export function CreateArticle({ onTitleChange }: CreateArticleProps) {
       )}
 
       <div>
-        <Dropdown>
+        <Dropdown >
           <DropdownTrigger>
             <Button
               variant="flat"
               size="sm"
-              className="bg-primary-400 mt-5 my-2 text-white"
+              className="bg-primary-400 relative z-0  mt-5 my-2 text-white"
             >
               <File className="w-4 h-4 mr-2" />
               Файл
