@@ -49,7 +49,7 @@ export const Navbar = () => {
           base: "w-full", // Базовая ширина 100%
         }}
         maxWidth="full"
-        position="sticky" // Устанавливаем максимальную ширину как full
+        position="sticky" 
       >
         <NavbarContent className="basis-1/5 sm:w-full" justify="start">
           <NavbarBrand className="gap-3 max-w-fit">
@@ -60,13 +60,12 @@ export const Navbar = () => {
           </NavbarBrand>
         </NavbarContent>
 
+
         <NavbarContent
           className="hidden sm:flex basis-1/5 sm:w-full"
           justify="end"
         >
-          <NavbarItem className="hidden sm:flex gap-2">
-            <ThemeSwitch />
-          </NavbarItem>
+          
           <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
           <NavbarItem className="hidden md:flex">
             <Button
@@ -79,13 +78,21 @@ export const Navbar = () => {
               Написать
             </Button>
           </NavbarItem>
+                    <NavbarItem className="hidden md:flex">
+            <Button
+              as={Link}
+              className="text-sm font-normal text-default-600 bg-default-100"
+              href="/auth"
+              variant="flat"
+            >
+              Войти
+            </Button>
+          </NavbarItem>
         </NavbarContent>
-
         <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
           <ThemeSwitch />
           <NavbarMenuToggle />
         </NavbarContent>
-
         <NavbarMenu>
           {searchInput}
         </NavbarMenu>

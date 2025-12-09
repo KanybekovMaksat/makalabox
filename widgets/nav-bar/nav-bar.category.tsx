@@ -1,41 +1,61 @@
-import { categoryQueries } from '~entities/category';
-import { NavbarItem } from './nav-bar.item';
-import { Avatar, CircularProgress } from '@mui/material';
-import { useState } from 'react';
+'use client';
 
-export function CategoryNavbar() {
-  const [selected, setSelected] = useState('');
-  const {
-    data: categories,
-    isLoading: isCategoryLoading,
-    isError: isCategoryError,
-  } = categoryQueries.useGetCategoryQuery();
+import { categoryQueries } from '@/entities/category';
+import { Button, ScrollShadow, Avatar, Spinner } from '@heroui/react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
-  if (isCategoryLoading) {
+export function CategorySection() {
+  const searchParams = useSearchParams();
+  const [selectedCat, setSelectedCat] = useState<string>('');
+
+  useEffect(() => {
+    setSelectedCat(searchParams.get('categories') ?? '');
+  }, [searchParams]);
+
+  const { data, isLoading, isError } = categoryQueries.useGetCategoryQuery();
+  const list = data?.data;
+
+  if (isLoading)
     return (
-      <div className="flex justify-center">
-        <CircularProgress />
+      <div className="flex justify-center py-4">
+        <Spinner size="sm" />
       </div>
     );
-  }
+  if (isError || !list) return null;
 
   return (
-    <>
-      {categories?.data?.map((category) => (
-        <NavbarItem
-          title={category.name}
-          to={`/feed?categories=${category.id}`}
-          icon={
-            <Avatar
-              src={category.photo}
-              alt={category.name}
-              className="w-[34px] h-[34px]"
-            />
-          }
-          selected={selected}
-          setSelected={setSelected}
-        />
-      ))}
-    </>
+    <div className="">
+      <p className="text-tiny text-default-500 mb-2">Категории</p>
+
+        <div className="flex flex-col gap-2">
+          {list.map((cat) => {
+            const active = selectedCat === String(cat.id);
+            return (
+              <Button
+                key={cat.id}
+                as={Link}
+                href={`/feed?categories=${cat.id}`}
+                variant={active ? 'solid' : 'light'}
+                color={active ? 'primary' : 'default'}
+                className="justify-start"
+                startContent={
+                  <Avatar
+                    src={cat.photo}
+                    alt={cat.name}
+                    size="sm"
+                    classNames={{ base: 'w-6 h-6' }}
+                  />
+                }
+                onPress={() => setSelectedCat(String(cat.id))}
+              >
+                {cat.name}
+              </Button>
+            );
+          })}
+        </div>
+
+    </div>
   );
 }

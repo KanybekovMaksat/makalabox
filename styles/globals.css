@@ -23,6 +23,34 @@
     @apply bg-background text-foreground;
   }
 }
+@layer utilities {
+  /* тонкий скролл, почти невидимый */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+  }
+
+  /* при наведении на контейнер – красим полосу */
+  .scrollbar-thin:hover {
+    scrollbar-color: rgba(0,0,0,.2) transparent;
+  }
+  .scrollbar-thin:hover::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,.2);
+  }
+  .dark .scrollbar-thin:hover::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.3);
+  }
+}
 
 .ps-sidebar-root {
   background-color: hsl(var(---background)) !important;

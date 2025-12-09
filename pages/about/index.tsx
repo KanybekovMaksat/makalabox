@@ -5,9 +5,9 @@ import { Card, CardHeader, CardBody, CardFooter } from '@heroui/card';
 export default function AboutPage() {
   return (
     <DefaultLayout>
-      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+      <section className="flex flex-col items-center justify-center gap-4 ">
         <div className="w-full px-4 py-6  rounded-lg">
-          <h1 className="mb-4 text-center sm:text-left">О Makalabox</h1>
+          <h1 className="mb-4 text-2xl font-bold sm:text-left">О Makalabox</h1>
           <p className="mb-4 text-justify">
             <strong>Makalabox (Коробка Статей)</strong> — это университетский
             веб-сайт, организованный в формате системы тематических блогов,

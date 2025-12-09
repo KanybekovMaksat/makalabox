@@ -15,7 +15,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { pathKeys } from '@/shared/lib/react-router';
-
+import { useRouter } from 'next/navigation';
 import { setCookie } from 'typescript-cookie';
 import { toast } from 'react-toastify';
 import { queryClient } from '@/shared/lib/react-query/react-query.lib';
@@ -78,7 +78,7 @@ export function useLoginUserQuery() {
 }
 
 export function useGetTokenMutation() {
-  // const navigate = useNavigate();
+  const navigate = useRouter();
   return useMutation({
     mutationKey: keys.getToken(),
     mutationFn: getTokenMutation,
@@ -88,7 +88,7 @@ export function useGetTokenMutation() {
       localStorage.removeItem('username');
       localStorage.removeItem('password');
       toast.success('Вы успешно авторизовались!', { autoClose: 500 });
-      // navigate(pathKeys.profile.root());
+      navigate.push('/profile');
     },
     onError: (error: AxiosErrorType) => {
       const errorMessage = error.response
@@ -162,6 +162,7 @@ export function useActivationMutation() {
     },
   });
 }
+
 export function useResetPaswordSendEmail() {
   return useMutation({
     mutationKey: keys.root(),

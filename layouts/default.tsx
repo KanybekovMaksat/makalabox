@@ -2,6 +2,7 @@ import { Link } from '@heroui/link';
 import { Head } from './head';
 import { Navbar } from '@/components/navbar';
 import { SideBar } from '@/widgets/nav-bar/nav-bar.ui';
+import { Card } from '@heroui/card';
 
 export default function DefaultLayout({
   children,
@@ -13,7 +14,7 @@ export default function DefaultLayout({
       <Head />
       <Navbar />
 
-      <main className="flex-1 flex justify-between ">
+      <main className="flex-1 flex  ">
         <div className="w-[15%]  ">
           <SideBar />
         </div>
@@ -23,20 +24,11 @@ export default function DefaultLayout({
           </div>
 
         <div className="w-[15%]  p-6">
-          {/* <div className="fixed">
-            <h3 className="font-bold text-lg mb-4">Реклама</h3>
-            <div className="space-y-3">
-              <div className="bg-white p-3 rounded border text-sm">
-                Рекламный блок 1
-              </div>
-              <div className="bg-white p-3 rounded border text-sm">
-                Рекламный блок 2
-              </div>
-              <div className="bg-white p-3 rounded border text-sm">
-                Рекламный блок 3
-              </div>
-            </div>
-          </div> */}
+          <div className="fixed">
+            <Card className="w-[200px] h-[500px] shadow-none border border-default-200">
+              <h2></h2>
+            </Card>
+          </div>
         </div>
       </main>
     </div>

@@ -17,32 +17,30 @@ import {
   PDFExporter,
   pdfDefaultSchemaMappings,
 } from '@blocknote/xl-pdf-exporter';
-import {
-  pdf,
-  Document,
-  View,
-  Text,
-  StyleSheet,
-} from '@react-pdf/renderer';
+import { pdf, Document, View, Text, StyleSheet } from '@react-pdf/renderer';
 import { codeBlockOptions } from '@blocknote/code-block';
-import { Button } from '@mui/material';
+import { Button } from '@heroui/button';
 import {
   docxDefaultSchemaMappings,
   DOCXExporter,
 } from '@blocknote/xl-docx-exporter';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import DownloadingIcon from '@mui/icons-material/Downloading';
-import ArticleIcon from '@mui/icons-material/Article';
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownSection,
+  DropdownItem,
+} from '@heroui/dropdown';
+import { Eye, File, Download } from 'lucide-react';
 
 type ArticleViewerProps = {
   body: any;
-  title:string
 };
 
 const styles = StyleSheet.create({
   contentWrapper: {
-    width: '85%', 
-    margin: '2% auto', 
+    width: '85%',
+    margin: '2% auto',
   },
   watermarkContainer: {
     position: 'absolute',
@@ -67,16 +65,24 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ArticleViewer({ body, title }: ArticleViewerProps) {
+export function ArticleViewer({ body }: ArticleViewerProps) {
   const [renders, forceRerender] = useReducer((s) => s + 1, 0);
-
+  const initialBlocks = useMemo(() => {
+    if (Array.isArray(body) && body.length) return body;
+    return [
+      {
+        type: 'paragraph',
+        content: [{ type: 'text', text: '' }],
+      },
+    ];
+  }, [body]);
   const schema = useMemo(() => {
     return withMultiColumn(withPageBreak(BlockNoteSchema.create()));
   }, []);
 
   const editor = useMemo(() => {
     return BlockNoteEditor.create({
-      initialContent: body ?? [],
+      initialContent: initialBlocks,
       schema: BlockNoteSchema.create().extend({
         blockSpecs: {
           codeBlock: createCodeBlockSpec(codeBlockOptions),
@@ -93,17 +99,15 @@ export function ArticleViewer({ body, title }: ArticleViewerProps) {
         headers: true,
       },
     });
-  }, [body, schema]);
+  }, [initialBlocks, schema, body]);
 
   const onChange = async () => {
     if (!editor) return;
     forceRerender();
   };
-
   useEffect(() => {
     onChange();
   }, [editor]);
-
 
   const createPdfDocument = async () => {
     const exporter = new PDFExporter(editor.schema, pdfDefaultSchemaMappings);
@@ -150,7 +154,6 @@ export function ArticleViewer({ body, title }: ArticleViewerProps) {
     URL.revokeObjectURL(url);
   };
 
-
   const handleDocxDownload = async () => {
     if (!editor) return;
     const exporter = new DOCXExporter(editor.schema, docxDefaultSchemaMappings);
@@ -166,7 +169,7 @@ export function ArticleViewer({ body, title }: ArticleViewerProps) {
   };
 
   return (
-    <div className='min-w-full'>
+    <div className="min-w-full">
       <BlockNoteView
         formattingToolbar={false}
         editable={false}
@@ -176,28 +179,36 @@ export function ArticleViewer({ body, title }: ArticleViewerProps) {
         editor={editor}
         onChange={onChange}
       ></BlockNoteView>
-      <div className="flex gap-2">
-        <Button
-          size="small"
-          className="shadow-none bg-[#e74c3c]  flex items-center gap-1"
-          startIcon={<DownloadingIcon />}
-          variant="contained"
-          onClick={handlePdfDownload}
-        >
-          <PictureAsPdfIcon />
-        </Button>
-        <Button
-          size="small"
-          variant="contained"
-          className="shadow-none lowercase"
-          startIcon={<DownloadingIcon />}
-          onClick={handleDocxDownload}
-        >
-          <div className="flex">
-            <ArticleIcon />
-            <p className="mt-1">.docx</p>
-          </div>
-        </Button>
+      <div>
+        <Dropdown>
+          <DropdownTrigger>
+            <Button
+              variant="flat"
+              size="sm"
+              className="bg-primary-400 relative z-0  mt-5 my-2 text-white"
+            >
+              <File className="w-4 h-4 mr-2" />
+             Скачать статью
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu aria-label="File actions" className="min-w-40">
+
+            <DropdownItem
+              key="pdf"
+              onPress={handlePdfDownload}
+              startContent={<Download className="w-4 h-4" />}
+            >
+              Скачать .pdf
+            </DropdownItem>
+            <DropdownItem
+              key="docx"
+              onPress={handleDocxDownload}
+              startContent={<Download className="w-4 h-4" />}
+            >
+              Скачать .docx
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
     </div>
   );

@@ -109,12 +109,14 @@ const CropperModal: React.FC<CropperModalProps> = ({
 };
 
 interface CoverCropperProps {
-  update: boolean;
+  update?: boolean;
   data?: string;
   setUpdate?: React.Dispatch<React.SetStateAction<boolean>>;
+  onChange?: (imageUrl: string) => void;          // ← data-url
+  onPositionChange?: (position: string) => void; // center / top / bottom
 }
 
-export function CoverCropper({ update, setUpdate, data }: CoverCropperProps) {
+export function CoverCropper({ update, setUpdate, data, onChange, onPositionChange}: CoverCropperProps) {
   const [src, setSrc] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -122,35 +124,36 @@ export function CoverCropper({ update, setUpdate, data }: CoverCropperProps) {
   const dropzoneRef = useRef<Dropzone | null>(null);
   
   // Загружаем сохраненное изображение только на клиенте
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('savedImage');
-      setSavedImage(saved);
-    }
-  }, []);
+useEffect(() => {
+  if (typeof window === 'undefined') return;
+  const saved = localStorage.getItem('savedImage');
+  setSavedImage(saved);
+  if (saved) onChange?.(saved);   // ← сразу сообщаем родителю
+}, [onChange]);
 
   const handleDrop = (dropped: File[]) => {
     setSrc(URL.createObjectURL(dropped[0]));
     setModalOpen(true);
   };
 
-  const handleSaveImage = (imageUrl: string) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('savedImage', imageUrl);
-      setSavedImage(imageUrl);
-    }
-  };
+const handleSaveImage = (imageUrl: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('savedImage', imageUrl);
+  }
+  setSavedImage(imageUrl);
+  setModalOpen(false);
+  onChange?.(imageUrl);         
+};
 
-  const handleSelectAnotherPhoto = () => {
-    setSrc(null);
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('savedImage');
-      setSavedImage(null);
-    }
-    if (dropzoneRef.current) {
-      dropzoneRef.current.open();
-    }
-  };
+const handleSelectAnotherPhoto = () => {
+  setSrc(null);
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('savedImage');
+  }
+  setSavedImage(null);
+  onChange?.('');        
+  if (dropzoneRef.current) dropzoneRef.current.open();
+};
 
   if (update) {
     return (

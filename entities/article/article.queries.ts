@@ -104,12 +104,26 @@ export function useGetFavoriteArticles() {
   });
 }
 
+
+export async function getArticleDetail(id: number): Promise<Article | null> {
+  try {
+    const { data } = await getArticleDetailsQuery(id);
+    return data;
+  } catch (e: any) {
+    if (e.response?.status === 404) return null;
+    throw e;   
+  }
+}
+
+
 export function useGetArticleDetail(id: number) {
   return useQuery({
     queryKey: keys.article(id),
     queryFn: () => getArticleDetailsQuery(id),
   });
 }
+
+
 
 export function useGetWriterArticle() {
   return useQuery({

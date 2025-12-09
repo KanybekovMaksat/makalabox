@@ -213,9 +213,7 @@ import { Card, CardHeader, CardBody, CardFooter } from '@heroui/card';
 import { Button } from '@heroui/button';
 import { Avatar } from '@heroui/avatar';
 
-import { Tooltip, Link as HLink, User } from '@heroui/react';
-
-/* Lucide icons */
+import { Tooltip, Link as HLink, User, Spinner } from '@heroui/react';
 import {
   Eye,
   Clock,
@@ -242,6 +240,7 @@ export function ArticlesList() {
     return (
       <div className="flex flex-col items-center justify-center py-10">
         <span className="loading loading-spinner loading-lg text-primary" />
+        <Spinner size="lg" />
         <p className="text-center mt-2">Загрузка статей...</p>
       </div>
     );
@@ -282,7 +281,6 @@ export function ArticlesList() {
   );
 }
 
-/* ---------- ArticleCard ---------- */
 type ArticleCardProps = { article: articleTypes.Article };
 
 function ArticleCard({ article }) {
@@ -291,7 +289,11 @@ function ArticleCard({ article }) {
   const handleNavigate = () => router.push(`/article/${article.id}`);
 
   return (
-    <Card className="w-full md:w-[650px] shadow-none border border-default-200">
+    <Card
+      isPressable
+      onPress={handleNavigate}
+      className="w-full md:w-[650px] shadow-none border border-default-200"
+    >
       <CardHeader className="justify-between">
         <div className="flex gap-3 items-center">
           <User
