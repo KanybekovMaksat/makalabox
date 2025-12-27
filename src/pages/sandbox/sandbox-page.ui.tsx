@@ -1,31 +1,17 @@
 import { useState } from 'react';
 import { CreateArticle } from '~widgets/create-article';
-import {
-  Container,
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
-  CircularProgress,
-} from '@mui/material';
+import { Container, Button } from '@mui/material';
 import { userQueries } from '~entities/user';
 import { pathKeys } from '~shared/lib/react-router';
 import { useNavigate } from 'react-router-dom';
 import { articleQueries } from '~entities/article';
 import { CategorySelect } from '~features/editor/category-select';
-import { OrganizationSelect } from '~features/editor/organization-select';
-import { StatusSelect } from '~features/editor/status-select';
 import { CoverCropper } from '~features/editor/cover-cropper';
 import { URLtoFile, calculateReadingTime } from '~shared/utils/editor';
 import { withErrorBoundary } from 'react-error-boundary';
 import { ErrorHandler } from '~shared/ui/error';
-import Confetti from 'react-confetti';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-interface StepperViewProps {
-  activeStep: number;
-}
-
-const steps = ['Составление статьи', 'Публикация статьи'];
 
 function Page() {
   const { data: userData } = userQueries.useLoginUserQuery();
@@ -35,200 +21,78 @@ function Page() {
   if (role === 'reader') {
     navigate(pathKeys.home());
   }
-
-  const [activeStep, setActiveStep] = useState(0);
-  const [activeConfetti, setActiveConfetti] = useState(false);
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const {
-    mutate: createArticle,
-    isPending,
-    isSuccess,
-  } = articleQueries.useCreateArticleMutation();
+  const { mutate: createArticle, isPending } =
+    articleQueries.useCreateArticleMutation();
 
   const [title, setTitle] = useState('');
-  const [selectedValues, setSelectedValues] = useState([]);
-  const [selectedOrg, setSelectedOrg] = useState();
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [selectedOrg, setSelectedOrg] = useState<string>('');
   const [status, setStatus] = useState('pending');
 
   const handleSubmit = async () => {
     try {
-      const blocksString = localStorage.getItem('sandboxContent');
+      const blocksString = localStorage.getItem('editorContent');
       const blocks = blocksString ? JSON.parse(blocksString) : [];
 
-      let firstParagraphText = '';
-      for (const block of blocks) {
-        if (
-          block.type === 'paragraph' &&
-          block.content &&
-          block.content.length > 0 &&
-          block.content[0].text
-        ) {
-          firstParagraphText = block.content[0].text;
-          break;
-        }
-      }
-
-      const trimmedSubtitle = firstParagraphText.substring(0, 250).toString();
+      const firstParagraph = blocks.find(
+        (b: any) =>
+          b.type === 'paragraph' &&
+          b.content &&
+          b.content.length > 0 &&
+          b.content[0].text
+      );
+      const trimmedSubtitle = firstParagraph
+        ? firstParagraph.content[0].text.substring(0, 250)
+        : '';
 
       const imageBlob = localStorage.getItem('savedImage');
       const file = await URLtoFile(imageBlob, imageBlob);
+
       const formData = new FormData();
       formData.append('photo', file);
       formData.append('title', title);
       formData.append('subtitle', trimmedSubtitle);
       formData.append('body', JSON.stringify(blocks));
       formData.append('status', status);
-      formData.append('organization', selectedOrg);
+      formData.append('organization', 9);
       formData.append('readTime', calculateReadingTime(blocks).toString());
       selectedValues.forEach((value) => formData.append('categories', value));
+
       await createArticle(formData);
-      setActiveConfetti(true);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
-  const handleStatusChange = (newStatus) => {
-    setStatus(newStatus);
+  const handleTitleChange = (newTitle: string) => {
+    setTitle(newTitle);
+    console.log(newTitle);
+    
   };
-
-  const handleChange = (selectedOptions) => {
-    if (selectedOptions.length <= 3) {
-      setSelectedValues(selectedOptions);
-    }
-  };
-
-  const handleChangeOrg = (selectedOptions) => {
-    setSelectedOrg(selectedOptions);
-  };
-
-  const handleChangeTitle = (event) => {
-    setTitle(event.target.value);
-  };
-
   return (
     <>
       <Container maxWidth="md" className="min-h-[700px] my-10">
-        <StepperView activeStep={activeStep} />
-
-        {activeStep === 0 && (
-          <div className="w-full my-5 flex flex-col bg-[white] border border-sc-100 p-3 md:p-5 rounded">
-            <div className="w-full px-[20px] mb-5">
-              <input
-                className="w-full font-bold mb-3 text-[32px] text-pc-500 resize-none leading-8  outline-none max-h-[300px]"
-                placeholder="ЗАГОЛОВОК"
-                value={title}
-                onChange={handleChangeTitle}
-              />
-              <CreateArticle />
-            </div>
-            <Button
-              className="self-end shadow-none bg-second-100"
-              variant="contained"
-              onClick={handleNext}
-            >
-              Далее
-            </Button>
-          </div>
-        )}
-        {activeStep === 1 && (
-          <div className="w-full my-5 flex flex-col bg-[white] border border-sc-100 p-5 rounded">
-            <h3 className="text-xl font-bold text-center">Публикация</h3>
-            <h4 className="text-lg font-medium mt-3">Выбор организации</h4>
-            <em className="text-xs">
-              Выберите только одну организацию, от которой будете публиковать
-              вашу статью
-            </em>
-            <OrganizationSelect
-              selectOrg={selectedOrg}
-              handleChange={handleChangeOrg}
-            />
-            <h4 className="text-lg font-medium mt-3">Выбор категорий</h4>
-            <em className="text-xs">Можете выбрать только до 3 категорий</em>
-            <CategorySelect
-              selectCategory={selectedValues}
-              handleChange={handleChange}
-            />
-            <h4 className="text-lg font-medium mt-3">
-              Статус для вашей статьи
-            </h4>
-            <em className="text-xs">
-              Пока статья в статусе "черновик", она не доступна для модерации и
-              публики.
-            </em>
-            <StatusSelect
-              status={status}
-              handleStatusChange={handleStatusChange}
-            />
-            <h4 className="text-lg font-medium mt-3">
-              Загрузите обложку для статьи
-            </h4>
-            <em className="text-xs">
-              Рекомендуемый размер картинки 650px*400px
-            </em>
-            <CoverCropper update={false} />
-            <div className="mt-4 flex justify-between">
-              <Button
-                variant="contained"
-                className="shadow-none  bg-second-100"
-                onClick={handleBack}
-              >
-                Назад
-              </Button>
-              {isPending ? (
-                <Button
-                  variant="outlined"
-                  className="cursor-wait flex gap-2  bg-second-100"
-                >
-                  <CircularProgress size={20} />
-                  Отправка данных...
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  className="shadow-none  bg-second-100"
-                  onClick={handleSubmit}
-                >
-                  Завершить
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
+        <div className="w-full my-5 flex flex-col bg-[white] border border-sc-100 p-3 md:p-5 rounded">
+          <CoverCropper update={false} />
+          <CategorySelect
+            selectCategory={selectedValues}
+            handleChange={setSelectedValues}
+          />
+          <CreateArticle onTitleChange={handleTitleChange} />
+          <Button
+            variant="contained"
+            size="small"
+            className="shadow-none flex gap-2 rounded-full w-40 bg-second-100"
+            onClick={handleSubmit}
+          >
+            <CloudUploadIcon/>
+            Опубликовать
+          </Button>
+        </div>
       </Container>
-      <Confetti
-        recycle={false}
-        run={activeConfetti}
-        tweenDuration={300}
-        width={window.innerWidth}
-        height={window.innerHeight}
-      />
     </>
   );
 }
-
-const StepperView: React.FC<StepperViewProps> = ({ activeStep }) => {
-  return (
-    <Stepper
-      className="bg-[white] p-3 border border-sc-100 rounded"
-      activeStep={activeStep}
-    >
-      {steps.map((label) => (
-        <Step key={label}>
-          <StepLabel>{label}</StepLabel>
-        </Step>
-      ))}
-    </Stepper>
-  );
-};
 
 export const SandboxPage = withErrorBoundary(Page, {
   fallbackRender: ({ error }) => <ErrorHandler error={error} />,

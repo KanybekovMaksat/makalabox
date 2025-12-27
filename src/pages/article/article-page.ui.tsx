@@ -151,7 +151,7 @@ function Page() {
       </Helmet>
       <Container maxWidth="md" className="mx-auto mb-[65px]">
         {articleData && (
-          <div className="max-w-full md:max-w-[95%] bg-[white] px-2 md:px-5 mb-5">
+          <div className="min-w-full max-w-full md:max-w-[95%] bg-[white] px-2 md:px-5 mb-5">
             <ArticleInfo article={articleData.data} />
             <Divider />
             {preLoad ? (
@@ -161,17 +161,24 @@ function Page() {
               </div>
             ) : (
               <>
-                <ArticleViewer body={articleData.data.body} />
-                <div className='flex justify-between pb-5'>
-                  <div className='flex gap-2'>
-                  <LikeButton
-                    like={{
-                      id: articleData.data.id,
-                      likeCount: articleData.data.likeCount,
-                      likes: articleData.data.likes,
-                    }}
-                  />
-                  <FavoriteButton id={articleData.data.id} />
+                <ArticleViewer
+                  title={articleData.data.title}
+                  body={
+                    Array.isArray(articleData?.data?.body)
+                      ? articleData.data.body
+                      : []
+                  }
+                />
+                <div className="flex justify-between pb-5">
+                  <div className="flex gap-2">
+                    <LikeButton
+                      like={{
+                        id: articleData.data.id,
+                        likeCount: articleData.data.likeCount,
+                        likes: articleData.data.likes,
+                      }}
+                    />
+                    <FavoriteButton id={articleData.data.id} />
                   </div>
                   <ShareButton
                     title={articleData.data.title}

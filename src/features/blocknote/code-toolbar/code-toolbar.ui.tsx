@@ -32,6 +32,7 @@ export function CodeButton() {
     } else {
       editor.addStyles({
         code: 'rgba(135,131,120,.15)',
+        backgroundColor: 'blue',
       });
       setIsSelected(true);
     }

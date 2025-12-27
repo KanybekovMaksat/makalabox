@@ -14,7 +14,7 @@ type CustomThemeProviderProps = {
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Golos Text',
+    fontFamily: 'Rubik',
   },
 });
 

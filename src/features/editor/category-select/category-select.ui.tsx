@@ -1,8 +1,45 @@
-import Select from 'react-select';
+import Select, { StylesConfig } from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { categoryQueries } from '~entities/category';
 
 const animatedComponents = makeAnimated();
+const MAX_CATEGORIES = 3; 
+
+type SelectOption = {
+  value: number;
+  label: string;
+};
+
+
+const colourStyles: StylesConfig<SelectOption, true> = {
+  multiValue: (styles, { data }) => {
+    return {
+      ...styles,
+      backgroundColor: '#0a85d1', 
+      borderRadius: '4px',
+      color: 'white',
+    };
+  },
+  multiValueLabel: (styles, { data }) => ({
+    ...styles,
+    color: 'white',
+    paddingRight: 6,
+  }),
+  multiValueRemove: (styles, { data }) => ({
+    ...styles,
+    color: 'white',
+    ':hover': {
+      backgroundColor: '#003F99',
+      color: 'white',
+    },
+  }),
+  option: (styles, { isDisabled }) => ({
+      ...styles,
+      backgroundColor: isDisabled ? '#f4f4f4' : styles.backgroundColor,
+      color: isDisabled ? '#ccc' : styles.color,
+      cursor: isDisabled ? 'not-allowed' : 'default',
+  }),
+};
 
 type Category = {
   id: number;
@@ -11,6 +48,17 @@ type Category = {
 };
 
 type ValueType<T> = T | T[] | null | undefined;
+
+export interface ColourOption {
+  readonly value: string;
+  readonly label: string;
+  readonly color: string;
+  readonly isFixed?: boolean;
+  readonly isDisabled?: boolean;
+}
+export const colourOptions: readonly ColourOption[] = [
+  { value: 'blue', label: 'Blue', color: '#0052CC', isDisabled: true },
+];
 
 type CategorySelectProps = {
   selectCategory: Array<number>;
@@ -35,42 +83,44 @@ export function CategorySelect({
     return <div>Error fetching user data.</div>;
   }
 
-  const transformData = (organizations: Category[]) => {
-    const groupedOptions: { label: string; options: { value: number; label: string }[] }[] = [];
+  const transformData = (organizations: Category[]): SelectOption[] => {
+    const options: SelectOption[] = [];
 
     organizations.forEach((category) => {
-      const categoryOptions = {
+      options.push({
+        value: category.id,
         label: category.name,
-        options: [],
-      };
-
-      if (category.children && category.children.length > 0) {
-        category.children.forEach((subcategory) => {
-          categoryOptions.options.push({
-            value: subcategory.id,
-            label: subcategory.name,
-          });
-        });
-      } else {
-        categoryOptions.options.push({
-          value: category.id,
-          label: category.name,
-        });
-      }
-
-      groupedOptions.push(categoryOptions);
+      });
     });
 
-    return groupedOptions;
+    return options; 
   };
 
   const options = transformData(organizationOptions.data);
 
-  const handleSelectChange = (selectedOptions: ValueType<{ value: number; label: string }>) => {
-    const selectedIds: number[] = (selectedOptions as { value: number; label: string }[])
-      .map(option => option.value);
+  const handleSelectChange = (selectedOptions: ValueType<SelectOption>) => {
+    let optionsArray: SelectOption[] = [];
+    
+    if (Array.isArray(selectedOptions)) {
+        optionsArray = selectedOptions;
+    } else if (selectedOptions) {
+        optionsArray = [selectedOptions];
+    }
+    if (optionsArray.length > MAX_CATEGORIES) {
+        optionsArray = optionsArray.slice(0, MAX_CATEGORIES);
+    }
+
+    const selectedIds: number[] = optionsArray.map(option => option.value);
+
     handleChange(selectedIds);
   };
+  
+  const selectedValues = options.filter(option => 
+      selectCategory.includes(option.value)
+  );
+  
+
+  const isMaxReached = selectCategory.length >= MAX_CATEGORIES; // 👈
 
   return (
     <Select
@@ -79,11 +129,13 @@ export function CategorySelect({
       isMulti
       isClearable
       isSearchable
-      placeholder="Категории"
+      styles={colourStyles}
+      placeholder="Темы"
       components={animatedComponents}
       options={options}
       onChange={handleSelectChange}
-      value={options.flatMap(category => category.options).filter(option => selectCategory.includes(option.value))}
+      value={selectedValues} 
+      isOptionDisabled={(option) => isMaxReached && !selectCategory.includes(option.value)}
     />
   );
 }

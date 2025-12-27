@@ -6,13 +6,11 @@ import { TopBar } from '~widgets/top-bar';
 import { NavBar } from '~widgets/nav-bar';
 import { Container } from '@mui/material';
 import { Footer } from '~widgets/footer';
-import AdComponent from '~app/provider/AdComponent';
 
 export function GenericLayout() {
   const isAuth = getCookie('access');
   return (
     <>
-    <AdComponent/>
       <ScrollTop />
       {isAuth ? <TopBar /> : <GuestBar />}
       <Container maxWidth="lg" className="flex relative mt-14 p-0">

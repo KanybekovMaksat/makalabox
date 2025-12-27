@@ -4,8 +4,8 @@ export default {
   important: '#root',
   theme: {
     fontFamily: {
-      serif: ['Golos Text', 'serif'],
-      sans: ['Golos Text', 'sans'],
+      serif: ['Noto Sans', 'serif'],
+      sans: ['Noto Sans', 'sans'],
     },
     colors: {
       'pc-100': '#F9F9F9',

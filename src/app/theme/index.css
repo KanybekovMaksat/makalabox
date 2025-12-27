@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
   background: #009dff0e;
+  font-family: 'Rubik';
   overflow-x: hidden;
   min-height: 100vh;
 }
@@ -21,30 +22,31 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #0000003e;
 }
-/* Scroll */
 
-
-/* Blocknote viewer */
-.bn-container[data-changing-font-demo] .bn-editor * {
-  font-family: 'Golos Text', sans-serif;
-}
 .bn-container[data-changing-font-demo] .bn-editor {
-  padding: 0;
+  padding: 0; 
 }
-.bn-container[data-changing-font-demo] .bn-default-styles {
-  font-size: 19px;
+
+.bn-container[data-changing-font-demo] .bn-editor * {
+  font-family: "Rubik", sans-serif;
 }
-.bn-container[data-changing-font-demo]
-  .bn-editor
-  .bn-image-and-caption-wrapper {
-  margin: 15px 0px;
+.bn-container[data-changing-font-demo] .bn-editor img {
+  max-width: 95%;
 }
+.bn-inline-content a{
+  color:#0a85d1 !important;
+  text-decoration:underline;
+}
+.bn-inline-content a:hover{
+  cursor:pointer;
+}
+
 .bn-container[data-changing-font-demo]
   .bn-editor
   .bn-block-outer:not([data-prev-type])
   > .bn-block
   > .bn-block-content[data-content-type='heading'][data-level='3'] {
-  font-size: 1.3em;
+  font-size: 1em;
   font-weight: 600;
 }
 .bn-container[data-changing-font-demo]
@@ -52,7 +54,7 @@ body {
   .bn-block-outer:not([data-prev-type])
   > .bn-block
   > .bn-block-content[data-content-type='heading'][data-level='2'] {
-  font-size: 1.8em;
+  font-size: 1.4em;
   font-weight: 600;
 }
 .bn-container[data-changing-font-demo]
@@ -60,51 +62,31 @@ body {
   .bn-block-outer:not([data-prev-type])
   > .bn-block
   > .bn-block-content[data-content-type='heading'][data-level='1'] {
-  font-size: 2.1em;
+  font-size: 1em;
   font-weight: 700;
 }
-/* Blocknote viewer */
-.cm-editor {
-  height: auto !important;
-}
-.slash-menu {
-  z-index: 9999;
-  background-color: white;
-  border: 1px solid lightgray;
-  border-radius: 2px;
-  display: flex;
-  flex-direction: column;
-  top: 8px;
-}
-@media screen and (max-width: 500px) {
-  .bn-inline-content {
-    font-size: 16px !important;
-  }
-}
-.slash-menu-item {
-  background-color: white;
-  border-radius: 2px;
 
-  cursor: pointer;
-
-  align-items: center;
-  display: flex;
-  flex-direction: row;
+/* Фон меню белый, текст чёрный */
+.bn-mantine .bn-suggestion-menu {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ddd !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
 }
 
-.slash-menu-item:hover,
-.slash-menu-item.selected {
-  background-color: lightgray;
+.bn-mt-suggestion-menu-item-subtitle {
+  color: rgba(0, 0, 0, 0.63) !important;
 }
-.code-toolbar {
-  color: #eb5757;
-  font-family: 'Roboto Mono' !important;
-  border-radius: 3px;
-  padding: 1px;
-  font-weight: 500;
+.bn-mt-suggestion-menu-item-title {
+  color: rgba(0, 0, 0, 0.747) !important;
 }
-/* Article Card */
 
+.bn-mt-suggestion-menu-item-section{
+  border:  1px solid #0000003d;
+}
+.bn-mt-suggestion-menu-item-section[data-position="right"]{
+ border: none; 
+}
 .card-info:hover .title {
   color: #0a85d1;
 }
@@ -321,15 +303,12 @@ body {
   }
 }
 
-
-
 .accordion-content {
   opacity: 0;
   max-height: 0; /* Блок будет скрыт */
   transition: opacity 0.3s ease-out, max-height 0.3s ease-out; /* Плавные переходы */
   overflow: hidden;
 }
-
 
 .accordion-content.show {
   opacity: 1;

@@ -64,46 +64,11 @@ export function TopBar() {
         <Toolbar disableGutters className="flex justify-between">
           <Link
             to={pathKeys.home()}
-            className="hidden md:flex font-bold text-xl hover:text-second-100 duration-300"
+            className="hidden md:flex text-[black]/70 font-medium   text-lg  duration-300"
           >
-            <WidgetsIcon className="mr-1" />
-            Makala Box
+            <img src="/public/iconss.svg" className="w-7 mr-1" alt="" />
+            Makalabox
           </Link>
-
-          {/* <div className="flex md:hidden">
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-              keepMounted
-              transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              className="block md:hidden"
-            >
-              {Object.keys(pages).map((pageKey) => (
-                <MenuItem
-                  key={pageKey}
-                  onClick={() => {
-                    handleNavigateToPage(pageKey);
-                    handleCloseNavMenu();
-                  }}
-                >
-                  <Typography textAlign="center">{pages[pageKey]}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </div> */}
           <div className="flex md:hidden">
             <WidgetsIcon />
             <Link to={pathKeys.home()} className="font-bold text-xl">

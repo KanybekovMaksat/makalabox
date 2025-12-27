@@ -11,51 +11,6 @@ import { Helmet } from 'react-helmet-async';
 import { IntroBlock } from '~widgets/intro-block';
 
 export function AboutPage() {
-  // useEffect(() => {
-  //   const { title, subtitle, photo, author, created } = articleData.data;
-  //   document.title = title;
-  //   let metaDescription = document.querySelector('meta[name="description"]');
-  //   if (metaDescription) {
-  //     metaDescription.setAttribute('content', subtitle);
-  //   } else {
-  //     metaDescription = document.createElement('meta');
-  //     metaDescription.name = 'description';
-  //     metaDescription.content = subtitle;
-  //     document.head.appendChild(metaDescription);
-  //   }
-  //   const ogTags = [
-  //     { property: 'og:title', content: title },
-  //     { property: 'og:description', content: subtitle },
-  //     { property: 'og:image', content: photo },
-  //     { property: 'og:type', content: 'article' },
-  //     { property: 'og:url', content: window.location.href },
-  //     { property: 'article:published_time', content: created },
-  //     { property: 'article:author', content: author.fullName },
-  //   ];
-  //   ogTags.forEach((tag) => {
-  //     let metaTag = document.querySelector(`meta[property="${tag.property}"]`);
-  //     if (metaTag) {
-  //       metaTag.setAttribute('content', tag.content);
-  //     } else {
-  //       metaTag = document.createElement('meta');
-  //       metaTag.setAttribute('property', tag.property);
-  //       metaTag.content = tag.content;
-  //       document.head.appendChild(metaTag);
-  //     }
-  //   });
-
-  //   return () => {
-  //     ogTags.forEach((tag) => {
-  //       const metaTag = document.querySelector(
-  //         `meta[property="${tag.property}"]`
-  //       );
-  //       if (metaTag) {
-  //         document.head.removeChild(metaTag);
-  //       }
-  //     });
-  //   };
-  // }, []);
-
   return (
     <Container
       maxWidth="md"

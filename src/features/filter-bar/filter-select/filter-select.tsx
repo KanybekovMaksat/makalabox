@@ -10,8 +10,6 @@ import { useState } from 'react';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 
-
-
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { categoryQueries } from '~entities/category';
