@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
   background: #009dff0e;
-  font-family: 'Rubik';
+  font-family: 'TikTok Sans', sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
 }
 
-/* Scroll */
+
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -28,7 +28,7 @@ body {
 }
 
 .bn-container[data-changing-font-demo] .bn-editor * {
-  font-family: "Rubik", sans-serif;
+  font-family: "TikTok Sans", sans-serif;
 }
 .bn-container[data-changing-font-demo] .bn-editor img {
   max-width: 95%;
@@ -110,9 +110,7 @@ body {
   border: 2px solid #0a85d1 !important;
 }
 
-/* Article Card */
 
-/* Slider */
 .swiper-card {
   filter: contrast(100%) brightness(90%) saturate(180%);
 }
@@ -134,7 +132,7 @@ body {
     rgba(11, 11, 11, 0) 0%,
     rgba(2, 2, 2, 0.8) 45%,
     rgb(6, 6, 6) 100%
-  ) !important; /* Градиент от прозрачного до черного с 70% прозрачности */
+  ) !important; 
 }
 .swiper-card h3 {
   position: relative;
@@ -305,12 +303,12 @@ body {
 
 .accordion-content {
   opacity: 0;
-  max-height: 0; /* Блок будет скрыт */
-  transition: opacity 0.3s ease-out, max-height 0.3s ease-out; /* Плавные переходы */
+  max-height: 0; 
+  transition: opacity 0.3s ease-out, max-height 0.3s ease-out; 
   overflow: hidden;
 }
 
 .accordion-content.show {
   opacity: 1;
-  max-height: 500px; /* Устанавливаем максимальную высоту для видимого блока */
+  max-height: 500px; 
 }

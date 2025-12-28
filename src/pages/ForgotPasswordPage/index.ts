@@ -1,0 +1,1 @@
+export {forgotPasswordPageRoute} from './route';

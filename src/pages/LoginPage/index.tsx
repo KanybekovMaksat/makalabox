@@ -1,0 +1,1 @@
+export { loginPageRoute } from './route';

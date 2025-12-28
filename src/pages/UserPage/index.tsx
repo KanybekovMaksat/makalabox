@@ -1,0 +1,1 @@
+export { userPageRoute } from './route';

@@ -1,0 +1,1 @@
+export { ratingPageRoute } from './route';

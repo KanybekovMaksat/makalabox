@@ -3,24 +3,25 @@ import {
   createBrowserRouter,
   useRouteError,
 } from 'react-router-dom';
-import { feedPageRoute } from '~pages/feed';
-import { homePageRoute } from '~pages/home';
-import { favoritesPageRoute } from '~pages/favorites';
-import { articlePageRoute } from '~pages/article';
-import { registerPageRoute } from '~pages/register';
-import { loginPageRoute } from '~pages/login';
-import { sandboxPageRoute } from '~pages/sandbox';
-import { profilePageRoute } from '~pages/profile';
-import { verifyPageRoute } from '~pages/verify';
-import { editPageRoute } from '~pages/edit';
-import { ratingPageRoute } from '~pages/rating';
-import { GenericLayout, IntroLayout } from '~pages/Layout';
-import { aboutPageRoute } from '~pages/about';
-import { userPageRoute } from '~pages/user';
-import { changePasswordPageRoute } from '~pages/change-password';
-import { forgotPasswordPageRoute } from '~pages/forgot-password';
-import { boxesPageRoute } from '~pages/boxes';
-import { boxPageRoute } from '~pages/box';
+import { feedPageRoute } from '~pages/FeedPage';
+import { homePageRoute } from '~pages/HomePage';
+import { favoritesPageRoute } from '~pages/FavoritesPage';
+import { articlePageRoute } from '~pages/ArticlePage';
+import { registerPageRoute } from '~pages/RegisterPage';
+import { loginPageRoute } from '~pages/LoginPage';
+import { sandboxPageRoute } from '~pages/SandboxPage';
+import { profilePageRoute } from '~pages/ProfilePage';
+import { verifyPageRoute } from '~pages/VerifyPage';
+import { editPageRoute } from '~pages/EditPage';
+import { ratingPageRoute } from '~pages/RatingPage';
+import { aboutPageRoute } from '~pages/AboutPage';
+import { userPageRoute } from '~pages/UserPage';
+import { changePasswordPageRoute } from '~pages/ChangePasswordPage';
+import { forgotPasswordPageRoute } from '~pages/ForgotPasswordPage';
+import { boxesPageRoute } from '~pages/BoxesPage';
+import { boxPageRoute } from '~pages/BoxPage';
+import { GenericLayout } from '~app/layouts/GenericLayout';
+import { IntroLayout } from '~app/layouts/IntroLayout';
 
 function BubbleError() {
   const error = useRouteError();

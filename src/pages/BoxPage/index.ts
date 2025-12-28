@@ -1,0 +1,1 @@
+export { boxPageRoute } from './route';

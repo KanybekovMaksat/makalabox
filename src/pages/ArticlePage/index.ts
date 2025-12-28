@@ -1,0 +1,1 @@
+export {articlePageRoute} from "./route";

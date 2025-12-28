@@ -1,0 +1,1 @@
+export { boxesPageRoute } from './route';

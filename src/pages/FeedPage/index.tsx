@@ -1,0 +1,1 @@
+export { feedPageRoute } from './route';

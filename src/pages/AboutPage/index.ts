@@ -1,0 +1,1 @@
+export { aboutPageRoute } from './route';

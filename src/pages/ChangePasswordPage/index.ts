@@ -1,0 +1,1 @@
+export { changePasswordPageRoute } from './route';

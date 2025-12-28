@@ -1,0 +1,1 @@
+export { editPageRoute } from './route';

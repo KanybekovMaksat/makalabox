@@ -1,0 +1,1 @@
+export {favoritesPageRoute} from "./route";
