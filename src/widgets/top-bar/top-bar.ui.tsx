@@ -66,13 +66,13 @@ export function TopBar() {
             to={pathKeys.home()}
             className="hidden md:flex text-[black]/70 font-medium   text-lg  duration-300"
           >
-            <img src="/public/iconss.svg" className="w-7 mr-1" alt="" />
+            <img src="/public/fav.png" className="w-7 mr-1" alt="" />
             Makalabox
           </Link>
           <div className="flex md:hidden">
             <WidgetsIcon />
             <Link to={pathKeys.home()} className="font-bold text-xl">
-              Makala Box
+              Makalabox
             </Link>
           </div>
 

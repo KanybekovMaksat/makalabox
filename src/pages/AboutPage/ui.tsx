@@ -59,7 +59,7 @@ export function AboutPage() {
             component="h2"
             className="mb-2 text-center sm:text-left"
           >
-            Руководство по текстовому редактору Makala Box
+            Руководство по текстовому редактору Makalabox
           </Typography>
           <Link
             href="https://makalabox.com/article/6/"
@@ -75,7 +75,7 @@ export function AboutPage() {
               />
               <CardContent className="w-full sm:w-2/3">
                 <Typography variant="h6" component="h5" className="text-base">
-                  Руководство по текстовому редактору Makala Box
+                  Руководство по текстовому редактору Makalabox
                 </Typography>
                 <Typography
                   variant="body2"
