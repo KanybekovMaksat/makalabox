@@ -4,7 +4,6 @@ import {
   Article,
   CreateArticleDto,
   CreateBox,
-  AddArticleBoxDtoSchema,
 } from './article.types';
 import axios from 'axios';
 
@@ -68,10 +67,6 @@ export function favoriteArticleQuery(id: number) {
 export function archivedArticle(id: number) {
   return $api.patch(`articles/me/${id}/`, { status: 'archived' });
 }
-
-// export function createArticleMutation(params: { article: CreateArticleDto }) {
-//   return $api.post(`articles/`, params.article);
-// }
 
 export function getArticleBoxes() {
   return $api.get('articles/boxs/me/');

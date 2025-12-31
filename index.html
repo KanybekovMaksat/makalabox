@@ -6,11 +6,11 @@
     <title>Makalabox</title>
     <meta
       name="description"
-      content="MakalaBox - платформа для обмена знаниями между преподавателями и студентами колледжей. Здесь они могут публиковать статьи по различным темам."
+      content="Makalabox - платформа для обмена знаниями между преподавателями и студентами колледжей. Здесь они могут публиковать статьи по различным темам."
     />
     <meta
       property="og:title"
-      content="MakalaBox - платформа для обмена знаниями между преподавателями и студентами колледжей. Здесь они могут публиковать статьи по различным темам."
+      content="Makalabox - платформа для обмена знаниями между преподавателями и студентами колледжей. Здесь они могут публиковать статьи по различным темам."
     />
     <meta
       property="og:description"
@@ -29,14 +29,10 @@
     <meta property="og:locale" content="ru_Ru" data-rh="true" />
     <meta
       name="description"
-      content="MakalaBox - платформа для обмена знаниями между преподавателями и студентами колледжей. Здесь они могут публиковать статьи по различным темам."
+      content="Makalabox - платформа для обмена знаниями между преподавателями и студентами колледжей. Здесь они могут публиковать статьи по различным темам."
       data-rh="true"
     />
-    <link
-      type="image/png"
-      rel="shortcut icon"
-      href="/fav.png"
-    />
+    <link type="image/png" rel="shortcut icon" href="/fav.png" />
     <meta
       name="google-site-verification"
       content="LXSkOTUTYlEjBZ2ett2beBKrW9MfrFYg8VwI4iH2QfQ"
@@ -46,7 +42,15 @@
     <meta name="yandex" content="all" />
   </head>
   <body>
-    <div id="root">Initializing the awesome.</div>
-    <script type="module" src="/src/app/index.tsx"></script>
-  </body>
+      <div id="root">
+        <div id="preloader">
+          <div class="logo">Makalabox</div>
+          <div class="text">Место, где рождаются знания</div>
+          <div class="dots">
+            Загрузка<span>.</span><span>.</span><span>.</span>
+          </div>
+        </div>
+      </div>
+      <script src="/preloader.js"></script>
+      <script type="module" src="/src/app/index.tsx"></script>
 </html>
