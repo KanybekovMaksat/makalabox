@@ -18,8 +18,10 @@ export const ArticleSchema = z.object({
   created: z.string(),
   author: z.object({
     id: z.number(),
+    username: z.string(),
     fullName: z.string(),
     photo: z.string().url(),
+    official:z.boolean(),
   }),
   organization: z.object({
     id: z.number(),
