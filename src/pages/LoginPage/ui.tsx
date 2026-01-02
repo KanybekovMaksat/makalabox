@@ -9,11 +9,9 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { ModalPopup } from '~widgets/modal-popup';
 
 function Page() {
   const [visibility, setVisibility] = useState(false);
-  const [active, setActive] = useState(false);
 
   const handleClickShowPassword = () =>
     setVisibility((visibility) => !visibility);
@@ -26,7 +24,7 @@ function Page() {
 
   return (
     <div className="w-[380px]  mx-auto rounded-md px-5 py-7 ">
-      <h1 className="font-bold  text-2xl text-pc-500">Вход в Makala Box</h1>
+      <h1 className="font-bold  text-2xl text-pc-500">Вход в Makalabox</h1>
       <Formik
         initialValues={initialUser}
         validate={validateForm}
