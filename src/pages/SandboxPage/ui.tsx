@@ -71,8 +71,8 @@ function Page() {
   };
   return (
     <>
-      <Container maxWidth="md" className="min-h-[700px] my-10">
-        <div className="w-full my-5 flex flex-col bg-[white] border border-sc-100 p-3 md:p-5 rounded">
+      <Container maxWidth="md" className="min-h-[700px] max-w-[650px] bg-[white] border border-sc-100 rounded my-10">
+        <div className="w-full my-5 flex flex-col">
           <CoverCropper update={false} />
           <CategorySelect
             selectCategory={selectedValues}

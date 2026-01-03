@@ -48,6 +48,7 @@
     "react-data-table-component-extensions": "^1.6.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-easy-crop": "^5.5.6",
     "react-error-boundary": "^4.0.13",
     "react-helmet": "^6.1.0",
     "react-helmet-async": "^2.0.5",
