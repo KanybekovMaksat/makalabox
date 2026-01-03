@@ -19,7 +19,7 @@ export function GuestBar() {
               to={pathKeys.home()}
               className="font-bold text-xl text-pc-500"
             >
-              Makala Box
+              Makalabox
             </Link>
           </Box>
           <Box className="flex items-center gap-1">
@@ -33,7 +33,7 @@ export function GuestBar() {
             </Link>
             <Link
               to={pathKeys.login()}
-              className="font-serif p-2 rounded border border-pc-400 text-pc-500 "
+              className="p-2 rounded border border-pc-400 text-pc-500 "
             >
               Авторизоваться
             </Link>
